@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <title>Brawl Profile | Z1LTEN</title>
+    <style>
+        /* === ПЕРЕМЕННЫЕ В СТИЛЕ BRAWL STARS === */
+        :root {
+            --bs-blue: #1b53c0;
+            --bs-dark-blue: #0f2c6b;
+            --bs-yellow: #fdd835;
+            --bs-orange: #f39c12;
+            --bs-purple: #8e44ad;
+            --bs-dark-purple: #4a235a;
+            --bs-red: #e74c3c;
+            --bs-green: #2ecc71;
+            --bs-black: #111111;
+            --border-thick: 4px solid var(--bs-black);
+            --bs-shadow: 0 8px 0 var(--bs-black), 0 15px 20px rgba(0,0,0,0.5);
+            --bs-font: 'Impact', 'Arial Black', sans-serif;
+        }
+
+        /* === БАЗОВЫЕ НАСТРОЙКИ === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: repeating-linear-gradient(
+                45deg,
+                #1a0b2e,
+                #1a0b2e 20px,
+                #23103d 20px,
+                #23103d 40px
+            );
+            color: white;
+            font-family: var(--bs-font);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        button, a, .tilt-card {
+            user-select: none;
+        }
+
+        button:focus-visible, a:focus-visible {
+            outline: 3px dashed var(--bs-yellow);
+            outline-offset: 4px;
+        }
+
+        /* === АНИМАЦИИ === */
+        @keyframes brawlerPop {
+            0% { transform: scale(0.5) translateY(50px); opacity: 0; }
+            70% { transform: scale(1.1) translateY(-10px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px var(--bs-purple), inset 0 0 10px var(--bs-purple); }
+            50% { box-shadow: 0 0 25px var(--bs-purple), inset 0 0 20px var(--bs-purple); }
+            100% { box-shadow: 0 0 10px var(--bs-purple), inset 0 0 10px var(--bs-purple); }
+        }
+
+        /* === ГЛАВНЫЙ КОНТЕЙНЕР === */
+        .profile-wrapper {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(180deg, var(--bs-blue) 0%, var(--bs-dark-blue) 100%);
+            border: var(--border-thick);
+            border-radius: 24px;
+            box-shadow: var(--bs-shadow);
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            opacity: 0;
+            animation: brawlerPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* === ШАПКА ПРОФИЛЯ === */
+        .header-bg {
+            height: 150px;
+            background-color: var(--bs-dark-purple);
+            background-image: url('assets/img/background.jpg'); /* ПУТЬ К ФОНУ */
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom: var(--border-thick);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        /* === АВАТАР И ИНФО ИГРОКА === */
+        .player-info {
+            text-align: center;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .rank-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--bs-yellow), var(--bs-orange));
+            border: var(--border-thick);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto;
+            box-shadow: 0 6px 0 var(--bs-black);
+        }
+
+        .player-name {
+            font-size: 42px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            -webkit-text-stroke: 2px var(--bs-black);
+            text-shadow: 3px 3px 0 var(--bs-black);
+            margin-top: 10px;
+            line-height: 1;
+        }
+
+        .player-tag-btn {
+            background: var(--bs-black);
+            color: var(--bs-yellow);
+            border: 2px solid var(--bs-yellow);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-family: var(--bs-font);
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-tag-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* === ПРОГРЕСС БАР ТРОФЕЕВ === */
+        .trophy-road {
+            margin: 20px;
+            background: var(--bs-black);
+            border: 3px solid var(--bs-black);
+            border-radius: 20px;
+            height: 30px;
+            position: relative;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .trophy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f1c40f, #f39c12);
+            width: 0%;
+            border-radius: 15px;
+            border-right: 2px solid white;
+            transition: width 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        .trophy-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .trophy-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            -webkit-text-stroke: 1px black;
+            z-index: 2;
+        }
+
+        /* === СЕТКА КАРТОЧЕК === */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .bs-card {
+            background: var(--bs-dark-purple);
+            border: var(--border-thick);
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 6px 0 var(--bs-black);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .bs-card.full { 
+            grid-column: span 2; 
+        }
+
+        .bs-card.gradient-dark {
+            background: linear-gradient(135deg, #4a235a, #2c3e50);
+        }
+
+        .bs-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            animation: shine 4s infinite;
+        }
+
+        .card-title {
+            color: #a9cce3;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            -webkit-text-stroke: 1px black;
+        }
+
+        .card-value {
+            color: white;
+            font-size: 26px;
+            -webkit-text-stroke: 1px black;
+            text-shadow: 2px 2px 0 black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .card-value-muted {
+            font-size: 16px;
+            color: #ccc;
+            -webkit-text-stroke: 0;
+            text-shadow: none;
+        }
+
+        .card-sub {
+            color: var(--bs-yellow);
+            font-size: 12px;
+            margin-top: 5px;
+            -webkit-text-stroke: 0.5px black;
+        }
+
+        /* === КАРТОЧКА ПУША (ЛИЛИ) === */
+        .pushing-brawler {
+            margin: 20px;
+            background: linear-gradient(45deg, #4a235a, #8e44ad);
+            border: var(--border-thick);
+            border-color: var(--bs-yellow);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 6px 0 var(--bs-black);
+            animation: pulseGlow 3s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .push-badge {
+            position: absolute;
+            top: -5px;
+            right: 15px;
+            background: var(--bs-red);
+            color: white;
+            padding: 5px 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 12px;
+            transform: rotate(10deg);
+            -webkit-text-stroke: 1px black;
+            z-index: 5;
+        }
+
+        .brawler-pic {
+            width: 70px;
+            height: 70px;
+            background: var(--bs-black);
+            border: 3px solid white;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            margin-right: 15px;
+        }
+
+        .brawler-details { 
+            flex-grow: 1; 
+        }
+
+        .brawler-name {
+            font-size: 28px;
+            color: white;
+            -webkit-text-stroke: 1px black;
+            text-shadow: 2px 2px 0 black;
+            text-transform: uppercase;
+        }
+
+        .brawler-trophies {
+            color: var(--bs-yellow);
+            font-size: 20px;
+            -webkit-text-stroke: 1px black;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* === ПАНЕЛЬ КНОПОК === */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .bs-btn {
+            flex: 1;
+            padding: 15px;
+            font-family: var(--bs-font);
+            font-size: 18px;
+            text-transform: uppercase;
+            color: white;
+            border: var(--border-thick);
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--bs-black);
+            transition: transform 0.1s, box-shadow 0.1s;
+            -webkit-text-stroke: 1px black;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .bs-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 var(--bs-black);
+        }
+
+        .btn-share { background: var(--bs-green); }
+        .btn-tg { background: #0088cc; }
+
+        /* === ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ === */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--bs-yellow);
+            color: black;
+            border: var(--border-thick);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 0 black;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast" role="alert" aria-live="polite">Тег скопирован! ✅</div>
+
+    <main class="profile-wrapper">
+        
+        <header class="header-bg"></header>
+
+        <section class="player-info">
+            <div class="avatar-container">
+                <div class="rank-icon">
+                    <img src="assets/img/rank_icon.png" alt="Rank" style="width: 80%; height: 80%; object-fit: contain;">
+                </div>
+            </div>
+            <h1 class="player-name">Z1LTEN</h1>
+            <button class="player-tag-btn" onclick="copyTag()" id="tagBtn" aria-label="Скопировать тег игрока">#J2LQJ9JGR 📋</button>
+        </section>
+
+        <div class="trophy-road" title="Прогресс до рекорда" role="progressbar" aria-valuenow="35502" aria-valuemin="0" aria-valuemax="35507">
+            <div class="trophy-fill" id="trophyFill"></div>
+            <div class="trophy-text">35 502 / 35 507</div>
+        </div>
+
+        <section class="stats-grid">
+            <article class="bs-card full tilt-card">
+                <div class="card-title">Текущие Трофеи</div>
+                <div class="card-value">🏆 35 502</div>
+                <div class="card-sub">РЕКОРД: 35 507</div>
+            </article>
+
+            <article class="bs-card tilt-card">
+                <div class="card-title">Победы 3v3</div>
+                <div class="card-value">⚔️ 5 516</div>
+            </article>
+
+            <article class="bs-card tilt-card">
+                <div class="card-title">Бойцы</div>
+                <div class="card-value">👤 85<span class="card-value-muted">/101</span></div>
+            </article>
+
+            <article class="bs-card full tilt-card gradient-dark">
+                <div class="card-title">Праймы (Mastery)</div>
+                <div class="card-value">⭐ 13 Бойцов</div>
+                <div class="card-sub">с 1 праймом (0 с II и 0 с III)</div>
+            </article>
+        </section>
+
+        <section class="pushing-brawler tilt-card">
+            <div class="push-badge">СЕЙЧАС ПУШУ!</div>
+            <div class="brawler-pic">
+                <img src="assets/img/lily_avatar.png" alt="Lily" style="width: 100%; height: 100%; border-radius: 9px; object-fit: cover;">
+            </div>            <div class="brawler-details">
+                <div class="brawler-name">Лили</div>
+                <div class="brawler-trophies">🏆 1264</div>
+            </div>
+        </section>
+
+        <nav class="action-buttons">
+            <button class="bs-btn btn-share" onclick="shareProfile()">Поделиться 📤</button>
+            <a href="https://t.me/tvmafk" target="_blank" rel="noopener noreferrer" class="bs-btn btn-tg">Telegram ✈️</a>
+        </nav>
+
+    </main>
+
+    <script>
+        // 1. Анимация полоски кубков при загрузке DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = 35502;
+                const record = 35507;
+                const percent = Math.min((current / record) * 100, 100); // Защита от выхода за 100%
+                document.getElementById('trophyFill').style.width = percent + '%';
+            }, 500); 
+        });
+
+        // Глобальная переменная для управления таймером уведомления
+        let toastTimeout;
+
+        // 2. Функция копирования тега с обработкой ошибок и сбросом таймера
+        function copyTag() {
+            const tag = "#J2LQJ9JGR";
+            const toast = document.getElementById('toast');
+            const btn = document.getElementById('tagBtn');
+
+            navigator.clipboard.writeText(tag).then(() => {
+                btn.innerHTML = "СКОПИРОВАНО! ✔️";
+                btn.style.borderColor = "var(--bs-green)";
+                btn.style.color = "var(--bs-green)";
+
+                toast.textContent = "Тег скопирован! ✅";
+                toast.classList.add('show');
+                
+                // Сброс предыдущего таймера для предотвращения конфликтов при быстром нажатии
+                clearTimeout(toastTimeout);
+                
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                    btn.innerHTML = "#J2LQJ9JGR 📋";
+                    btn.style.borderColor = "var(--bs-yellow)";
+                    btn.style.color = "var(--bs-yellow)";
+                }, 2000);
+            }).catch(err => {
+                console.error("Ошибка копирования: ", err);
+                toast.textContent = "Ошибка копирования ❌";
+                toast.classList.add('show');
+                
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // 3. Функция "Поделиться"
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Brawl Stars Profile | Z1LTEN',
+                    text: 'Смотри мой профиль в Brawl Stars! Тег: #J2LQJ9JGR, Трофеи: 35 502 🏆',
+                    url: window.location.href
+                }).catch(err => {
+                    if (err.name !== 'AbortError') {
+                        console.error("Ошибка шаринга:", err);
+                    }
+                });
+            } else {
+                copyTag();
+                const toast = document.getElementById('toast');
+                toast.textContent = "Ссылка скопирована! ✅";
+            }
+        }
+
+        // 4. 3D Tilt эффект для карточек
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.tilt-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; 
+                    const y = e.clientY - rect.top;  
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; 
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    card.style.zIndex = "10";
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    card.style.zIndex = "1";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
